@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org">
+<!-- Ensure parallel mode is explicitly set to "none" -->
+<suite name="Regression Suite" parallel="none">
+    <test name="E-Commerce End To End Queue">
+        <classes>
+
+            <class name="tests.SearchItemTest" />
+            <class name="tests.CartTest" />
+        </classes>
+    </test>
+</suite>

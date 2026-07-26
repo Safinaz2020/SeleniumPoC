@@ -1,30 +1,23 @@
 package factory;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import java.time.Duration;
-
 
 public class DriverFactory {
+    // ThreadLocal isolates the driver instances completely
+    private static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
 
-
-    public static WebDriver driver;
-
-    public static WebDriver getDriver(){
-
-        if(driver == null){
-
-            WebDriverManager.chromedriver().setup();
-
-            driver = new ChromeDriver();
-
-            driver.manage().window().maximize();
-
-            driver.manage().timeouts()
-                    .implicitlyWait(Duration.ofSeconds(10));
+    public static WebDriver getDriver() {
+        if (tlDriver.get() == null) {
+            tlDriver.set(new ChromeDriver());
         }
+        return tlDriver.get();
+    }
 
-        return driver;
+    public static void removeDriver() {
+        if (tlDriver.get() != null) {
+            tlDriver.get().quit(); // Quits the browser session
+            tlDriver.remove();    // Clears the thread storage reference completely
+        }
     }
 }
